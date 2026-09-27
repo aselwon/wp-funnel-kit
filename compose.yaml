@@ -1,0 +1,45 @@
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: local-root-only
+    volumes:
+      - db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      retries: 30
+  wordpress:
+    image: wordpress:6.8-php8.2-apache
+    ports: ["127.0.0.1:8080:80"]
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_CONFIG_EXTRA: "define('FUNNELKIT_WEBHOOK_SECRET', 'local-demo-webhook-secret-change-me');"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - wordpress:/var/www/html
+      - ./:/var/www/html/wp-content/plugins/funnelkit-lite
+  cli:
+    image: wordpress:cli-php8.2
+    user: "33:33"
+    profiles: ["tools"]
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - wordpress:/var/www/html
+      - ./:/var/www/html/wp-content/plugins/funnelkit-lite
+    entrypoint: ["wp", "--allow-root"]
+volumes:
+  db:
+  wordpress:
