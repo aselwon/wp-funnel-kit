@@ -2,6 +2,11 @@
 
 FunnelKit Lite is a small WordPress 6.x plugin (minimum WordPress 6.6; the Compose demo is tested on 6.8) demonstrating a complete sales-funnel path: PHP shortcode, consented lead capture, React 18 + TypeScript settings, A/B copy, conversion metrics, and offline mock checkout. It is an MVP portfolio project, not a WooCommerce replacement or Elementor add-on.
 
+## Public demo
+
+No public demo is currently available. This is a WordPress plugin demonstrated through the local Docker Compose environment below.
+
+
 ## Five-minute recruiter demo
 
 Requirements: Docker Desktop (or compatible Docker Compose) and Node.js/npm for source builds. PHP/Composer are optional: run the PHP suite in the documented Composer/PHPUnit container when they are unavailable on the host.
